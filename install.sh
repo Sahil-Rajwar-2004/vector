@@ -7,6 +7,18 @@
 
 echo "Starting the installation process..."
 
+if pip show vector > /dev/null 2>&1; then
+    echo "'vector' library is already installed."
+    read -p "Do you want to uninstall the existing 'vector' library? (yes/no): " response
+    if [[ "$response" =~ ^[Yy][Ee][Ss]$ || "$response" =~ ^[Yy]$ ]]; then
+        echo "Uninstalling the existing 'vector' library..."
+        pip uninstall -y vector
+    else
+        echo "Exiting without reinstalling."
+        exit 0
+    fi
+fi
+
 cd /mnt/d/fun/vector || { echo "Directory not found!"; exit 1; }
 
 echo "Creating dist folder..."
