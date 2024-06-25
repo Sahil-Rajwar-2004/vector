@@ -57,4 +57,5 @@ if ($?) {
     Write-Host "Failed to install $libraryName version $libraryVersion."
 }
 
-
+Remove-Item -Path "./dist" -Force
+Remove-Item -Path "./vector.egg-info" -Force
