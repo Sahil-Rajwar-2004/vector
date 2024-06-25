@@ -16,12 +16,15 @@
 
 #### Windows Users
 4. If you are using Window OS then run the `install.ps1` script
+
     ```ps
     pwsh install.ps1
     ```
 
 #### OR Linux / MacOS Users
 4. If you are using Linux / MacOS then run the `install.sh` script
+
+
     ```bash
     bash install.sh
     ```
