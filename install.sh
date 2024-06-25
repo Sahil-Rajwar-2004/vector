@@ -49,5 +49,9 @@ else
     exit 1
 fi
 
+rm -rf ./vector.egg-info
+rm -rf ./dist
+rm -rf ./build
+
 echo "Installation process completed"
 
