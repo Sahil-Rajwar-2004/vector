@@ -2,10 +2,10 @@
 
 # If you are using Linux or macOS 
 # this file can automatically install this lib on your system
-# or If you are on Windows then sadly you have to do it manually
+# or If you are on Windows then run the install.ps file
 # cause I don't have a PyPi account
 
-echo "Starting the installation process..."
+echo "Initiating the installation process..."
 
 if pip show vector > /dev/null 2>&1; then
     echo "'vector' library is already installed."
