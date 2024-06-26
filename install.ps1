@@ -3,59 +3,38 @@
 # or If you are on Linux or macOS then run the install.sh file
 # cause I don't have a PyPi account
 
+$pkg = "vector"
+
+pip show $pkg > $null 2>&1
+
+if ($LASTEXITCODE -eq 0) {
+    Write-Host "$pkg lib is already installed"
+    exit 0
+} else {
+    Write-Host "$pkg isn't installed yet"
+}
+
 Write-Host "Initiating the installation process..."
 
-$libraryName = "vector"
-$libraryVersion = "0.1.0"
-
-$pythonPath = (Get-Command python -ErrorAction SilentlyContinue).Source
-if (-not $pythonPath) {
-    Write-Host "Python is not installed on this system."
-    exit 1
-}
-
-$pipPath = (Get-Command pip -ErrorAction SilentlyContinue).Source
-if (-not $pipPath) {
-    Write-Host "pip is not installed on this system."
-    exit 1
-}
-
-$checkResult = & pip show $libraryName 2>&1
-
-if ($checkResult -like "*Name: $libraryName*") {
-    Write-Host "$libraryName is already installed."
-
-    $userInput = Read-Host "Do you want to uninstall $libraryName and install version $libraryVersion? (yes/no)"
-    if ($userInput -eq "yes") {
-        & pip uninstall -y $libraryName
-        if ($?) {
-            Write-Host "$libraryName has been uninstalled."
-        } else {
-            Write-Host "Failed to uninstall $libraryName. Exiting."
-            exit 1
-        }
-    } else {
-        Write-Host "Installation of $libraryName version $libraryVersion declined."
-        exit 0
-    }
-}
-
-Write-Host "Creating source distribution package..."
-& python setup.py sdist
-if ($?) {
-    Write-Host "Source distribution package created successfully."
+if (Test-Path "./setup.py") {
+    Write-Host "setup.py has been found!"
 } else {
-    Write-Host "Failed to create source distribution package."
+    Write-Host "setup.py file not found!"
     exit 1
 }
 
-Write-Host "Installing $libraryName version $libraryVersion..."
-& pip install .\dist\$libraryName-$libraryVersion.tar.gz
-if ($?) {
-    Write-Host "$libraryName version $libraryVersion installed successfully."
+python ./setup.py sdist bdist_wheel
+Set-Location ./dist
+pip install *.whl
+Set-Location ..
+Remove-Item -Recurse -Force ./dist, ./build, ./matrix.egg-info
+
+pip show $pkg > null 2>&1
+
+if ($LASTEXITCODE -eq 0) {
+    Write-Host "$pkg lib has been installed successfully"
 } else {
-    Write-Host "Failed to install $libraryName version $libraryVersion."
+    Write-Host "something bad has happened! try to install manually"
+    exit 1
 }
 
-Remove-Item -Path "./dist" -Force
-Remove-Item -Path "./vector.egg-info" -Force
