@@ -27,7 +27,7 @@ python ./setup.py sdist bdist_wheel
 $whlPath = Get-ChildItem -Recurse -Force ".\dist\*.whl"
 pip install $whlPath
 
-Remove-Item -Recurse -Force "./dist", "./build", "./matrix.egg-info" -ErrorAction SilentlyContinue
+Remove-Item -Recurse -Force "./dist", "./build", "./vector.egg-info" -ErrorAction SilentlyContinue
 
 pip show $pkg > null 2>&1
 
